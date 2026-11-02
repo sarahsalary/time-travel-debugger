@@ -1,0 +1,11 @@
+{"timestamp":"2026-10-15T09:49:00Z","level":"INFO","service":"api","message":"Service startup completed","version":"2.5"}
+{"timestamp":"2026-10-15T09:50:30Z","level":"INFO","service":"database","message":"Database pool healthy","pool_free":12}
+{"timestamp":"2026-10-15T09:52:00Z","level":"INFO","service":"api","message":"Deployment complete version 2.6","event_type":"deployment","version":"2.6"}
+{"timestamp":"2026-10-15T09:53:20Z","level":"INFO","service":"gateway","message":"Incoming GET /checkout","trace_id":"trace-incident-1","span_id":"g-1"}
+{"timestamp":"2026-10-15T09:53:21Z","level":"INFO","service":"api","message":"Checkout handler started","trace_id":"trace-incident-1","span_id":"a-1","parent_span_id":"g-1"}
+{"timestamp":"2026-10-15T09:53:21.200Z","level":"WARNING","service":"database","message":"Connection pool almost exhausted","trace_id":"trace-incident-1","span_id":"db-1","parent_span_id":"a-1","pool_free":1}
+{"timestamp":"2026-10-15T09:53:21.350Z","level":"ERROR","service":"database","message":"Connection pool exhausted","trace_id":"trace-incident-1","span_id":"db-1","parent_span_id":"a-1","pool_free":0}
+{"timestamp":"2026-10-15T09:53:22Z","level":"ERROR","service":"api","message":"Checkout failed: database timeout","trace_id":"trace-incident-1","span_id":"a-1","parent_span_id":"g-1","http_status":504}
+{"timestamp":"2026-10-15T09:53:22.500Z","level":"ERROR","service":"gateway","message":"HTTP 504 returned to client","trace_id":"trace-incident-1","span_id":"g-1","http_status":504}
+{"timestamp":"2026-10-15T09:53:23Z","level":"WARNING","service":"api","message":"Retrying checkout","trace_id":"trace-incident-2","span_id":"a-2"}
+{"timestamp":"2026-10-15T09:54:05Z","level":"INFO","service":"database","message":"Connection pool restarted","event_type":"restart","pool_free":12}

@@ -1,0 +1,2 @@
+time=2024-10-26T14:30:00Z level=info service=api msg="Request started" trace_id=t1
+time=2024-10-26T14:30:02Z level=error service=api msg="Timeout contacting db" trace_id=t1

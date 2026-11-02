@@ -1,0 +1,5 @@
+# Do not commit real webhook credentials.
+[alerts]
+min_severity = "high"
+
+# Add notification channels according to src/ttd/alerts/config.py.

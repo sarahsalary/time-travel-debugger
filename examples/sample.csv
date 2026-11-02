@@ -1,0 +1,3 @@
+timestamp,level,service,message,trace_id
+2024-10-26T14:30:00Z,INFO,api,Request started,t1
+2024-10-26T14:30:02Z,ERROR,api,Connection timeout,t1

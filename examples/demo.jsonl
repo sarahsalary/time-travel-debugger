@@ -1,0 +1,6 @@
+{"timestamp":"2024-10-26T14:30:00Z","level":"INFO","service":"gateway","message":"Incoming request","trace_id":"demo-1","span_id":"span-gw"}
+{"timestamp":"2024-10-26T14:30:00.080Z","level":"INFO","service":"api","message":"Request received","trace_id":"demo-1","span_id":"span-api","parent_span_id":"span-gw","duration_ms":82}
+{"timestamp":"2024-10-26T14:30:00.120Z","level":"INFO","service":"database","message":"Query completed","trace_id":"demo-1","span_id":"span-db","parent_span_id":"span-api","duration_ms":38}
+{"timestamp":"2024-10-26T14:30:00.400Z","level":"ERROR","service":"api","message":"Connection timeout for user 102","trace_id":"demo-1","span_id":"span-err","parent_span_id":"span-api","duration_ms":620,"http_status":504}
+{"timestamp":"2024-10-26T14:30:02Z","level":"WARNING","service":"database","message":"Retry query for user 103","trace_id":"demo-2","span_id":"span-db-2","duration_ms":270}
+{"timestamp":"2024-10-26T14:30:04Z","level":"INFO","service":"gateway","message":"Request finished","trace_id":"demo-2","span_id":"span-gw-2","duration_ms":82}

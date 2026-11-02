@@ -1,0 +1,9 @@
+[[nodes]]
+name = "primary"
+url = "http://localhost:3100"
+weight = 3
+
+[[nodes]]
+name = "secondary"
+url = "http://localhost:3101"
+weight = 1

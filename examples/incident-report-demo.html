@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TTD Incident Investigation</title>
+<style>
+:root{color-scheme:dark;font:15px/1.55 system-ui,-apple-system,'Segoe UI',sans-serif;
+  --bg:#0e1524;--card:#172238;--muted:#aebfd4;--stroke:#334661;--ink:#f0f5ff;--gold:#ffd37c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink)}
+main{max-width:1100px;margin:0 auto;padding:28px 18px 52px}h1{font-size:clamp(24px,4vw,34px);margin:0}
+h2{font-size:18px;margin:0 0 12px}p{margin:7px 0 12px;color:var(--muted)}
+header{margin-bottom:20px}.eyebrow{font-size:12px;font-weight:bold;letter-spacing:.14em;color:#80c5fc}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:18px 0}
+.tile,.panel{border:1px solid var(--stroke);background:var(--card);border-radius:14px;padding:18px}
+.tile b{display:block;font-size:21px}.tile small{color:var(--muted)}
+.panel{margin:14px 0}.warning{border-left:4px solid var(--gold);padding:12px 16px;background:#312a1d;color:#ffe8ba;border-radius:8px}
+small,.muted{color:var(--muted)}code{color:#b7dbff;overflow-wrap:anywhere}
+input[type=range]{width:100%;accent-color:#68baff;margin:12px 0}
+.controls{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid #4c6884;border-radius:16px;padding:2px 9px;font-size:12px;color:#bedbf8}
+button{border:1px solid #5379a4;border-radius:8px;background:#243e5e;color:white;padding:7px 10px;cursor:pointer}
+button:hover,button:focus-visible{background:#376192}
+.feed{margin:0;padding:0;list-style:none;max-height:540px;overflow:auto}
+.feed li{display:grid;grid-template-columns:155px 86px 105px minmax(0,1fr);gap:9px;
+  padding:9px;border-bottom:1px solid #334661;align-items:start;font-size:13px}
+.feed li.active{background:#2b4768}.feed li.error{border-left:3px solid #f48b8b}
+.feed .message{overflow-wrap:anywhere}.feed .date{font-variant-numeric:tabular-nums;color:#a7c9ef}
+.table-scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:670px}th{text-align:left;color:#b2c6dd}
+th,td{border-bottom:1px solid var(--stroke);padding:10px 7px;vertical-align:top}td{font-size:13px}
+ul.limitations{padding-left:23px;color:#aebfd4}
+@media(max-width:740px){.feed li{grid-template-columns:1fr 1fr}.feed .message{grid-column:1/-1}}
+</style></head><body><main>
+<header><div class="eyebrow">TIME-TRAVEL DEBUGGER / INCIDENT INVESTIGATION</div>
+<h1>Historical root-cause investigation</h1><p>Selected failure: <code id="selected-anchor"></code></p></header>
+<div class="warning"><strong>Evidence, not proof.</strong> This report ranks potential precursors observed in logs.
+It cannot determine a verified root cause from chronology or shared traces alone.</div>
+<div class="grid"><div class="tile"><small>Observed events</small><b>11</b></div>
+<div class="tile"><small>Services in window</small><b>3</b></div>
+<div class="tile"><small>Candidate precursors</small><b>3</b></div>
+<div class="tile"><small>Explicit service links</small><b>2</b></div></div>
+<section class="panel"><h2>Investigation finding</h2><p id="finding"></p></section>
+<section class="panel"><h2>Travel through time</h2>
+<p>Move the slider or select an event. Events recorded after the chosen point remain hidden until you move forward.</p>
+<div class="controls"><span id="current-date" class="chip"></span><span id="visible-count" class="chip"></span></div>
+<input type="range" id="scrubber" min="0" step="1" aria-label="Choose a timeline event">
+<div class="controls"><button id="previous">Previous event</button><button id="jump-error">Jump to selected error</button>
+<button id="next">Next event</button></div>
+<h2 style="margin-top:20px">Events up to selected time</h2><ul class="feed" id="feed"></ul>
+<p id="omission"></p></section>
+<section class="panel"><h2>Ranked precursor evidence</h2>
+<p>Score = heuristic sorting only, NOT probability. Select evidence to jump to the recorded event.</p>
+<div class="table-scroll"><table><thead><tr><th>Recorded at</th><th>Service</th><th>Link type</th><th>Score</th><th>Observation</th><th>Jump</th></tr></thead>
+<tbody id="evidence"></tbody></table></div></section>
+<section class="panel"><h2>Explicit service relationships</h2><p>Derived only from matching trace IDs and parent/child span IDs.</p>
+<div id="links"></div></section>
+<section class="panel"><h2>Important limitations</h2><ul class="limitations" id="limitations"></ul></section>
+</main><script>const REPORT = {"method": "heuristic_evidence_first_v1", "warning": "Candidates are possible precursors, NOT verified root causes; scores are not probabilities.", "selected_error_index": 2, "error_total": 3, "incident_id": "E000008", "anchor": {"event_id": "E000008", "timestamp": "2026-10-15T09:53:22+00:00", "level": "ERROR", "service": "api", "trace_id": "trace-incident-1", "span_id": "a-1", "parent_span_id": "g-1", "message": "Checkout failed: database timeout", "extra": {"http_status": 504}, "duration_ms": null}, "range_start": "2026-10-15T09:43:22+00:00", "range_end": "2026-10-15T09:55:22+00:00", "lookback_minutes": 10.0, "lookahead_minutes": 2.0, "event_count": 11, "by_service": {"api": 5, "database": 4, "gateway": 2}, "timeline": [{"event_id": "E000001", "timestamp": "2026-10-15T09:49:00+00:00", "level": "INFO", "service": "api", "trace_id": null, "span_id": null, "parent_span_id": null, "message": "Service startup completed", "extra": {"version": "2.5"}, "duration_ms": null, "phase": "before", "same_trace": false, "is_evidence": false}, {"event_id": "E000002", "timestamp": "2026-10-15T09:50:30+00:00", "level": "INFO", "service": "database", "trace_id": null, "span_id": null, "parent_span_id": null, "message": "Database pool healthy", "extra": {"pool_free": 12}, "duration_ms": null, "phase": "before", "same_trace": false, "is_evidence": false}, {"event_id": "E000003", "timestamp": "2026-10-15T09:52:00+00:00", "level": "INFO", "service": "api", "trace_id": null, "span_id": null, "parent_span_id": null, "message": "Deployment complete version 2.6", "extra": {"event_type": "deployment", "version": "2.6"}, "duration_ms": null, "phase": "before", "same_trace": false, "is_evidence": true}, {"event_id": "E000004", "timestamp": "2026-10-15T09:53:20+00:00", "level": "INFO", "service": "gateway", "trace_id": "trace-incident-1", "span_id": "g-1", "parent_span_id": null, "message": "Incoming GET /checkout", "extra": {}, "duration_ms": null, "phase": "before", "same_trace": true, "is_evidence": false}, {"event_id": "E000005", "timestamp": "2026-10-15T09:53:21+00:00", "level": "INFO", "service": "api", "trace_id": "trace-incident-1", "span_id": "a-1", "parent_span_id": "g-1", "message": "Checkout handler started", "extra": {}, "duration_ms": null, "phase": "before", "same_trace": true, "is_evidence": false}, {"event_id": "E000006", "timestamp": "2026-10-15T09:53:21.200000+00:00", "level": "WARNING", "service": "database", "trace_id": "trace-incident-1", "span_id": "db-1", "parent_span_id": "a-1", "message": "Connection pool almost exhausted", "extra": {"pool_free": 1}, "duration_ms": null, "phase": "before", "same_trace": true, "is_evidence": true}, {"event_id": "E000007", "timestamp": "2026-10-15T09:53:21.350000+00:00", "level": "ERROR", "service": "database", "trace_id": "trace-incident-1", "span_id": "db-1", "parent_span_id": "a-1", "message": "Connection pool exhausted", "extra": {"pool_free": 0}, "duration_ms": null, "phase": "before", "same_trace": true, "is_evidence": true}, {"event_id": "E000008", "timestamp": "2026-10-15T09:53:22+00:00", "level": "ERROR", "service": "api", "trace_id": "trace-incident-1", "span_id": "a-1", "parent_span_id": "g-1", "message": "Checkout failed: database timeout", "extra": {"http_status": 504}, "duration_ms": null, "phase": "selected_error", "same_trace": true, "is_evidence": false}, {"event_id": "E000009", "timestamp": "2026-10-15T09:53:22.500000+00:00", "level": "ERROR", "service": "gateway", "trace_id": "trace-incident-1", "span_id": "g-1", "parent_span_id": null, "message": "HTTP 504 returned to client", "extra": {"http_status": 504}, "duration_ms": null, "phase": "after", "same_trace": true, "is_evidence": false}, {"event_id": "E000010", "timestamp": "2026-10-15T09:53:23+00:00", "level": "WARNING", "service": "api", "trace_id": "trace-incident-2", "span_id": "a-2", "parent_span_id": null, "message": "Retrying checkout", "extra": {}, "duration_ms": null, "phase": "after", "same_trace": false, "is_evidence": false}, {"event_id": "E000011", "timestamp": "2026-10-15T09:54:05+00:00", "level": "INFO", "service": "database", "trace_id": null, "span_id": null, "parent_span_id": null, "message": "Connection pool restarted", "extra": {"event_type": "restart", "pool_free": 12}, "duration_ms": null, "phase": "after", "same_trace": false, "is_evidence": false}], "evidence": [{"event_id": "E000007", "timestamp": "2026-10-15T09:53:21.350000+00:00", "service": "database", "kind": "earlier_trace_error", "strength": "trace-linked", "score": 93, "explanation": "Earlier error in the same trace; examine whether it contributed to the selected failure.", "message": "Connection pool exhausted"}, {"event_id": "E000006", "timestamp": "2026-10-15T09:53:21.200000+00:00", "service": "database", "kind": "earlier_trace_warning", "strength": "trace-linked", "score": 81, "explanation": "Earlier warning in the same trace; inspect the operation and dependencies.", "message": "Connection pool almost exhausted"}, {"event_id": "E000003", "timestamp": "2026-10-15T09:52:00+00:00", "service": "api", "kind": "nearby_change", "strength": "temporal-only", "score": 33, "explanation": "A nearby deployment/configuration-type event; timing alone cannot establish causality.", "message": "Deployment complete version 2.6"}], "service_links": [{"caller": "api", "callee": "database", "trace_id": "trace-incident-1", "parent_span_id": "a-1", "child_span_id": "db-1"}, {"caller": "gateway", "callee": "api", "trace_id": "trace-incident-1", "parent_span_id": "g-1", "child_span_id": "a-1"}], "summary": "Highest-ranked observable precursor: database / earlier_trace_error (E000007, trace-linked). This is a hypothesis to investigate, not a verified root cause.", "limitations": ["Evidence is derived exclusively from supplied log events; missing logs and unsynchronized clocks may invalidate ordering.", "A shared trace ID or temporal proximity indicates association, not proof of causation.", "Scores only rank fixed heuristics; they are not calibrated probabilities or machine-learning predictions.", "Events recorded after the selected error are displayed for context but never ranked as precursors.", "Service arrows are shown only for explicit same-trace parent/child span IDs, not for arbitrary adjacent log entries."], "omitted_from_timeline": 0};
+
+(function(){'use strict';
+const $=id=>document.getElementById(id), doc=document;
+const events=REPORT.timeline, scrub=$('scrubber'), anchor=REPORT.anchor;
+$('selected-anchor').textContent = anchor.timestamp+' | '+anchor.service+' | '+anchor.message;
+$('finding').textContent=REPORT.summary;
+$('omission').textContent=REPORT.omitted_from_timeline ?
+  `${REPORT.omitted_from_timeline} events omitted from the display limit (counts include them).` : '';
+function node(tag,cls,txt){const n=doc.createElement(tag);if(cls)n.className=cls;if(txt!==undefined)n.textContent=String(txt);return n;}
+const anchorAt=events.findIndex(e=>e.event_id===anchor.event_id);
+scrub.max=String(Math.max(0,events.length-1));scrub.value=String(Math.max(anchorAt,0));
+function update(){
+ const position=Number(scrub.value), selected=events[position];
+ const ul=$('feed');ul.replaceChildren();
+ if(!selected){$('current-date').textContent='No events';return;}
+ $('current-date').textContent=selected.timestamp;
+ const visible=events.slice(0,position+1);
+ $('visible-count').textContent=visible.length+' / '+events.length+' displayed';
+ for(const e of visible){
+   const li=node('li',(e.level==='ERROR'||e.level==='CRITICAL'||e.level==='FATAL')?'error':'');
+   if(e.event_id===selected.event_id)li.className+=' active';
+   li.append(node('span','date',e.timestamp.replace('T',' ').slice(0,23)),node('span','',e.level),node('span','',e.service));
+   const msg=node('div','message');msg.append(node('strong','',e.message));
+   if(e.is_evidence)msg.append(node('span','chip',' precursor evidence'));
+   if(e.event_id===anchor.event_id)msg.append(node('span','chip',' selected failure'));
+   msg.append(node('div','muted',e.event_id + (e.trace_id?' · trace '+e.trace_id:'')));
+   li.append(msg);li.tabIndex=0;li.title='Select this event';
+   li.addEventListener('click',()=>jump(e.event_id));
+   ul.append(li);
+ }
+}
+function jump(id){const i=events.findIndex(e=>e.event_id===id);if(i>=0){scrub.value=String(i);update();}}
+scrub.addEventListener('input',update);
+$('previous').addEventListener('click',()=>{scrub.value=String(Math.max(0,Number(scrub.value)-1));update();});
+$('next').addEventListener('click',()=>{scrub.value=String(Math.min(events.length-1,Number(scrub.value)+1));update();});
+$('jump-error').addEventListener('click',()=>jump(anchor.event_id));
+for(const e of REPORT.evidence){
+ const tr=node('tr');tr.append(node('td','',e.timestamp),node('td','',e.service),node('td','',e.strength),node('td','',e.score));
+ const explanation=node('td');explanation.append(node('strong','',e.message),node('p','',e.explanation));tr.append(explanation);
+ const td=node('td'),b=node('button','','View');b.addEventListener('click',()=>jump(e.event_id));td.append(b);tr.append(td);$('evidence').append(tr);
+}
+if(!REPORT.evidence.length){$('evidence').append(node('tr','','No candidate precursor events recorded.'));}
+for(const l of REPORT.service_links){$('links').append(node('p','',l.caller+' → '+l.callee+' | trace '+l.trace_id));}
+if(!REPORT.service_links.length)$('links').textContent='No explicit cross-service parent/child spans found in this window.';
+for(const line of REPORT.limitations)$('limitations').append(node('li','',line));
+update();
+})();
+</script></body></html>

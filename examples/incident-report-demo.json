@@ -1,0 +1,273 @@
+{
+  "method": "heuristic_evidence_first_v1",
+  "warning": "Candidates are possible precursors, NOT verified root causes; scores are not probabilities.",
+  "selected_error_index": 2,
+  "error_total": 3,
+  "incident_id": "E000008",
+  "anchor": {
+    "event_id": "E000008",
+    "timestamp": "2026-10-15T09:53:22+00:00",
+    "level": "ERROR",
+    "service": "api",
+    "trace_id": "trace-incident-1",
+    "span_id": "a-1",
+    "parent_span_id": "g-1",
+    "message": "Checkout failed: database timeout",
+    "extra": {
+      "http_status": 504
+    },
+    "duration_ms": null
+  },
+  "range_start": "2026-10-15T09:43:22+00:00",
+  "range_end": "2026-10-15T09:55:22+00:00",
+  "lookback_minutes": 10.0,
+  "lookahead_minutes": 2.0,
+  "event_count": 11,
+  "by_service": {
+    "api": 5,
+    "database": 4,
+    "gateway": 2
+  },
+  "timeline": [
+    {
+      "event_id": "E000001",
+      "timestamp": "2026-10-15T09:49:00+00:00",
+      "level": "INFO",
+      "service": "api",
+      "trace_id": null,
+      "span_id": null,
+      "parent_span_id": null,
+      "message": "Service startup completed",
+      "extra": {
+        "version": "2.5"
+      },
+      "duration_ms": null,
+      "phase": "before",
+      "same_trace": false,
+      "is_evidence": false
+    },
+    {
+      "event_id": "E000002",
+      "timestamp": "2026-10-15T09:50:30+00:00",
+      "level": "INFO",
+      "service": "database",
+      "trace_id": null,
+      "span_id": null,
+      "parent_span_id": null,
+      "message": "Database pool healthy",
+      "extra": {
+        "pool_free": 12
+      },
+      "duration_ms": null,
+      "phase": "before",
+      "same_trace": false,
+      "is_evidence": false
+    },
+    {
+      "event_id": "E000003",
+      "timestamp": "2026-10-15T09:52:00+00:00",
+      "level": "INFO",
+      "service": "api",
+      "trace_id": null,
+      "span_id": null,
+      "parent_span_id": null,
+      "message": "Deployment complete version 2.6",
+      "extra": {
+        "event_type": "deployment",
+        "version": "2.6"
+      },
+      "duration_ms": null,
+      "phase": "before",
+      "same_trace": false,
+      "is_evidence": true
+    },
+    {
+      "event_id": "E000004",
+      "timestamp": "2026-10-15T09:53:20+00:00",
+      "level": "INFO",
+      "service": "gateway",
+      "trace_id": "trace-incident-1",
+      "span_id": "g-1",
+      "parent_span_id": null,
+      "message": "Incoming GET /checkout",
+      "extra": {},
+      "duration_ms": null,
+      "phase": "before",
+      "same_trace": true,
+      "is_evidence": false
+    },
+    {
+      "event_id": "E000005",
+      "timestamp": "2026-10-15T09:53:21+00:00",
+      "level": "INFO",
+      "service": "api",
+      "trace_id": "trace-incident-1",
+      "span_id": "a-1",
+      "parent_span_id": "g-1",
+      "message": "Checkout handler started",
+      "extra": {},
+      "duration_ms": null,
+      "phase": "before",
+      "same_trace": true,
+      "is_evidence": false
+    },
+    {
+      "event_id": "E000006",
+      "timestamp": "2026-10-15T09:53:21.200000+00:00",
+      "level": "WARNING",
+      "service": "database",
+      "trace_id": "trace-incident-1",
+      "span_id": "db-1",
+      "parent_span_id": "a-1",
+      "message": "Connection pool almost exhausted",
+      "extra": {
+        "pool_free": 1
+      },
+      "duration_ms": null,
+      "phase": "before",
+      "same_trace": true,
+      "is_evidence": true
+    },
+    {
+      "event_id": "E000007",
+      "timestamp": "2026-10-15T09:53:21.350000+00:00",
+      "level": "ERROR",
+      "service": "database",
+      "trace_id": "trace-incident-1",
+      "span_id": "db-1",
+      "parent_span_id": "a-1",
+      "message": "Connection pool exhausted",
+      "extra": {
+        "pool_free": 0
+      },
+      "duration_ms": null,
+      "phase": "before",
+      "same_trace": true,
+      "is_evidence": true
+    },
+    {
+      "event_id": "E000008",
+      "timestamp": "2026-10-15T09:53:22+00:00",
+      "level": "ERROR",
+      "service": "api",
+      "trace_id": "trace-incident-1",
+      "span_id": "a-1",
+      "parent_span_id": "g-1",
+      "message": "Checkout failed: database timeout",
+      "extra": {
+        "http_status": 504
+      },
+      "duration_ms": null,
+      "phase": "selected_error",
+      "same_trace": true,
+      "is_evidence": false
+    },
+    {
+      "event_id": "E000009",
+      "timestamp": "2026-10-15T09:53:22.500000+00:00",
+      "level": "ERROR",
+      "service": "gateway",
+      "trace_id": "trace-incident-1",
+      "span_id": "g-1",
+      "parent_span_id": null,
+      "message": "HTTP 504 returned to client",
+      "extra": {
+        "http_status": 504
+      },
+      "duration_ms": null,
+      "phase": "after",
+      "same_trace": true,
+      "is_evidence": false
+    },
+    {
+      "event_id": "E000010",
+      "timestamp": "2026-10-15T09:53:23+00:00",
+      "level": "WARNING",
+      "service": "api",
+      "trace_id": "trace-incident-2",
+      "span_id": "a-2",
+      "parent_span_id": null,
+      "message": "Retrying checkout",
+      "extra": {},
+      "duration_ms": null,
+      "phase": "after",
+      "same_trace": false,
+      "is_evidence": false
+    },
+    {
+      "event_id": "E000011",
+      "timestamp": "2026-10-15T09:54:05+00:00",
+      "level": "INFO",
+      "service": "database",
+      "trace_id": null,
+      "span_id": null,
+      "parent_span_id": null,
+      "message": "Connection pool restarted",
+      "extra": {
+        "event_type": "restart",
+        "pool_free": 12
+      },
+      "duration_ms": null,
+      "phase": "after",
+      "same_trace": false,
+      "is_evidence": false
+    }
+  ],
+  "evidence": [
+    {
+      "event_id": "E000007",
+      "timestamp": "2026-10-15T09:53:21.350000+00:00",
+      "service": "database",
+      "kind": "earlier_trace_error",
+      "strength": "trace-linked",
+      "score": 93,
+      "explanation": "Earlier error in the same trace; examine whether it contributed to the selected failure.",
+      "message": "Connection pool exhausted"
+    },
+    {
+      "event_id": "E000006",
+      "timestamp": "2026-10-15T09:53:21.200000+00:00",
+      "service": "database",
+      "kind": "earlier_trace_warning",
+      "strength": "trace-linked",
+      "score": 81,
+      "explanation": "Earlier warning in the same trace; inspect the operation and dependencies.",
+      "message": "Connection pool almost exhausted"
+    },
+    {
+      "event_id": "E000003",
+      "timestamp": "2026-10-15T09:52:00+00:00",
+      "service": "api",
+      "kind": "nearby_change",
+      "strength": "temporal-only",
+      "score": 33,
+      "explanation": "A nearby deployment/configuration-type event; timing alone cannot establish causality.",
+      "message": "Deployment complete version 2.6"
+    }
+  ],
+  "service_links": [
+    {
+      "caller": "api",
+      "callee": "database",
+      "trace_id": "trace-incident-1",
+      "parent_span_id": "a-1",
+      "child_span_id": "db-1"
+    },
+    {
+      "caller": "gateway",
+      "callee": "api",
+      "trace_id": "trace-incident-1",
+      "parent_span_id": "g-1",
+      "child_span_id": "a-1"
+    }
+  ],
+  "summary": "Highest-ranked observable precursor: database / earlier_trace_error (E000007, trace-linked). This is a hypothesis to investigate, not a verified root cause.",
+  "limitations": [
+    "Evidence is derived exclusively from supplied log events; missing logs and unsynchronized clocks may invalidate ordering.",
+    "A shared trace ID or temporal proximity indicates association, not proof of causation.",
+    "Scores only rank fixed heuristics; they are not calibrated probabilities or machine-learning predictions.",
+    "Events recorded after the selected error are displayed for context but never ranked as precursors.",
+    "Service arrows are shown only for explicit same-trace parent/child span IDs, not for arbitrary adjacent log entries."
+  ],
+  "omitted_from_timeline": 0
+}

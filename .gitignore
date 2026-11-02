@@ -1,0 +1,23 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+build/
+dist/
+*.egg-info/
+.idea/
+.vscode/
+*.jsonl.tmp
+*.checkpoint.json
+.env
+
+# Generated local reports and caches
+incident-demo.*
+demo-report.html
+*.log
+*.sqlite3
+.DS_Store
+Thumbs.db

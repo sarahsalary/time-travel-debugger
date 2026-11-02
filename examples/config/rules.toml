@@ -1,0 +1,7 @@
+[[rules]]
+name = "high_error_frequency"
+type = "frequency"
+query = "level=ERROR"
+num_events = 10
+timeframe_seconds = 300
+severity = "high"
